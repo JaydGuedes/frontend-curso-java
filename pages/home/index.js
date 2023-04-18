@@ -16,6 +16,12 @@ function myHome() {
 
     $.get(app.apiArticlesURL)
         .done((data) =>{
-            console.log(data)
+            data.forEach(art => {
+                console.log(
+                    art.id,
+                    art.thumbnail,
+                    art.title,
+                    art.resume)
+            });
         })
 }
