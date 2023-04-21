@@ -151,3 +151,51 @@ INSERT INTO articles (
     'Este é o segundo artigo do nosso blog.',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a ultrices leo. Vivamus in suscipit quam. Sed posuere erat non massa vehicula laoreet.'
 );
+INSERT INTO articles (
+    art_author,
+    art_title,
+    art_thumbnail,
+    art_resume,
+    art_content
+) VALUES (
+    '2',
+    'Segundo artigo da parada',
+    'https://picsum.photos/199',
+    'Este é o segundo artigo do nosso blog.',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a ultrices leo. Vivamus in suscipit quam. Sed posuere erat non massa vehicula laoreet.'
+);
+INSERT INTO articles (
+    art_author,
+    art_title,
+    art_thumbnail,
+    art_resume,
+    art_content
+) VALUES (
+    '3',
+    'Segundo artigo da parada',
+    'https://picsum.photos/188',
+    'Este é o segundo artigo do nosso blog.',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a ultrices leo. Vivamus in suscipit quam. Sed posuere erat non massa vehicula laoreet.'
+);
+
+INSERT into comments (
+    cmt_author,
+    cmt_article,
+    cmt_comment
+    )
+    values (
+        '1',
+        '3',
+        'adoreiiiiiiiii'
+    )
+
+    INSERT into comments (
+    cmt_author,
+    cmt_article,
+    cmt_comment
+    )
+    values (
+        '2',
+        '3',
+        'adoreiiiiiiiii'
+    )
