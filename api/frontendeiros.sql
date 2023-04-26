@@ -145,7 +145,7 @@ INSERT INTO articles (
     art_resume,
     art_content
 ) VALUES (
-    '4',
+    '3',
     'Segundo artigo da parada',
     'https://picsum.photos/201',
     'Este é o segundo artigo do nosso blog.',
@@ -187,7 +187,7 @@ INSERT into comments (
         '1',
         '3',
         'adoreiiiiiiiii'
-    )
+    );
 
     INSERT into comments (
     cmt_author,
