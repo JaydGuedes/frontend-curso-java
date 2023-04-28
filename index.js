@@ -77,7 +77,10 @@ function myApp() {
             <i class="fa-solid fa-user fa-fw"></i>
             <span>Login</span>
         `)
-        $('#navUser').attr('href', 'login')
+        $('#navUser').attr({ 
+            'href': 'home',
+            // 'onclick': 'login()'
+         })
     }
     /**
      * IMPORTANTE!

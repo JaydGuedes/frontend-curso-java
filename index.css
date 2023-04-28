@@ -125,6 +125,13 @@ body{
     font-size: 2rem;
     margin-bottom: .4rem;
 }
+#wrap>nav a img {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: .4rem;
+    border-radius: 50%;
+}
 
 /*Conteúdo*/
 
