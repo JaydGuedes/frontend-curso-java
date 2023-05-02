@@ -59,29 +59,25 @@ $(document).ready(myApp)
  *  • https://www.w3schools.com/js/js_functions.asp
  **/
 function myApp() {
-    // Variável com dados do usuário logado.
-    var user;
 
-    // Se tem usuário logado.
-    if (sessionStorage.userData) {
+  // Monitora status de autenticação do usuário
+  firebase.auth().onAuthStateChanged((user) => {
 
-        // Dados do usuário logado
-        user = JSON.parse(sessionStorage.userData)
-        $('#navUser').html(`
-            <img src="${user.photo}" alt="${user.name}" referrerpolicy="no-referrer">
-            <span>Perfil</span>
-        `)
+    // Se o usuário está logado...
+    if (user) {
+
+        // Mostra a imagem do usuário e o link de perfil.
+        $('#navUser').html(`<img src="${user.photoURL}" alt="${user.displayName}" referrerpolicy="no-referrer"><span>Perfil</span>`)
         $('#navUser').attr('href', 'profile')
+
+        // Se não tem logados...
     } else {
-        $('#navUser').html(`
-            <i class="fa-solid fa-user fa-fw"></i>
-            <span>Login</span>
-        `)
-        $('#navUser').attr({ 
-            'href': 'home',
-            // 'onclick': 'login()'
-         })
+
+        // Mostra o ícone de usuário e o link de login.
+        $('#navUser').html(`<i class="fa-solid fa-user fa-fw"></i><span>Login</span>`)
+        $('#navUser').attr('href', 'login')
     }
+});
     /**
      * IMPORTANTE!
      * Para que o roteamento funcione corretamente no "live server", é 
@@ -89,17 +85,17 @@ function myApp() {
      **/
 
     // Verifica se o 'localStorage' contém uma rota.
-    if (localStorage.path == undefined) {
+    if (sessionStorage.path == undefined) {
 
         // Se não contém, aponta a rota 'home'.
-        localStorage.path = 'home'
+        sessionStorage.path = 'home'
     }
 
     // Armazena a rota obtida em 'path'.        
-    var path = localStorage.path
+    var path = sessionStorage.path
 
     // Apaga o 'localStorage', liberando o recurso.
-    delete localStorage.path
+    delete sessionStorage.path
 
     // Carrega a página solicitada pela rota.
     loadpage(path)
@@ -110,6 +106,14 @@ function myApp() {
      **/
     $(document).on('click', 'a', routerLink)
 
+}
+
+// Faz login do usuário usando o Firebase Authentication
+function fbLogin() {
+    firebase.auth().signInWithPopup(provider)
+        .then(() => {
+            loadpage('home')
+        })
 }
 
 /**
@@ -153,6 +157,14 @@ function routerLink() {
         // Devolve o controle para o HTML.
         return true
 
+      /**
+     * Se clicou no link para 'login', executa a função de login.
+     */
+      if (href == 'login') {
+        fbLogin()
+        return false
+    }
+    
     /**
      * Carrega a rota solicitada.
      **/
@@ -255,6 +267,14 @@ function loadpage(page, updateURL = true) {
                 $.getScript(path.js)
             }
 
+        })
+        
+
+        // Se ocorreu falha em carregar o documento...
+        .catch(() => {
+
+            // Carrega a página de erro 404 sem atualizar a rota.
+            loadpage('e404', false)
         })
 
     /**
