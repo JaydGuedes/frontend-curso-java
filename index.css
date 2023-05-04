@@ -18,7 +18,7 @@
 *{
     box-sizing: border-box;
     outline: none;
-    transition: .2s;
+    transition: .15s;
 }
 html,
 body {
@@ -164,6 +164,15 @@ body{
     border: 1px dotted grey;
 }
 
+#wrap>footer a {
+    color: #ddd;
+    text-decoration: none;
+}
+
+#wrap>footer a:hover {
+    color: #ffa500;
+    text-decoration: none;
+}
 /* Linha superior do rodapé. */
 
 .footer-top{
@@ -216,12 +225,19 @@ body{
     border: .25rem solid transparent;
 }
 
+.center {
+    text-align: center;
+}
+
 /***********************/
 /* Em larguras maiores */
 /***********************/
 
 @media screen and (min-width: 480px){
     /* Cabeçalho */
+    #wrap>header a {
+        font-size: 4rem;
+    }
 
     #wrap>header h1 {
         letter-spacing: .1rem;
