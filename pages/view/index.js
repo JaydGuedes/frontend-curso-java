@@ -32,6 +32,7 @@ function myView() {
                 <h2>${art.title}</h2>
                 <small id="dateAuthor" class="dateAuthor"></small>
                 <div>${art.content}</div>
+                &nbsp;<hr class="sep">
                 <h3 class="comt-title">Comentários</h3>
                 <div id="commentForm"></div>
                 <div id="commentList"></div>   
@@ -76,7 +77,7 @@ function myView() {
                             `
                             uArt.forEach((data) => {
                                 if (data.id != art.id) {
-                                    authorArts += `<li><a href="view" data-id="${data.id}">${data.title}</a></li>`
+                                    authorArts += `<li class="art-item" data-id="${data.id}">${data.title}</li>`
                                 }
                             });
                             authorArts += `</ul>`
@@ -109,8 +110,14 @@ function sendComment(event) {
     // Evita ação normal do HTML. Não envia o formulário.
     event.preventDefault()
 
-    // Obter o comentário do formulário.
-    var content = $('#txtContent').val().trim()
+    // Obtém o comentário do formulário, sanitizando o conteúdo.
+    var content = stripHtml($('#txtContent').val().trim())
+
+    // Escreveo conteúdo sanitizado no campo.
+    $('#txtContent').val(content)
+
+    // Se o conteúdo é vazio, não faz nada.
+    if (content == '') return false
 
     // Obtém a data atual do sistema.
     const today = new Date()
@@ -185,25 +192,28 @@ function getComments(artId) {
     $.get(app.apiCommentURL + '&article=' + artId)
         .done((cmts) => {
 
-if(cmts.length > 0){
+            if (cmts.length > 0) {
 
-            cmts.forEach((cmt) => {
+                cmts.forEach((cmt) => {
 
-                // Obtém e formata a data do artigo.
-                var parts = cmt.date.split(' ')[0].split('-')
-                var date = `${parts[2]}/${parts[1]}/${parts[0]} às ${cmt.date.split(' ')[1]}`
+                    // Obtém e formata a data do artigo.
+                    var parts = cmt.date.split(' ')[0].split('-')
+                    var date = `${parts[2]}/${parts[1]}/${parts[0]} às ${cmt.date.split(' ')[1]}`
 
-                cmtList += `
+                    // Substitui quebras de linha (\n) pela tag <br> no conteúdo.
+                    var content = cmt.content.split("\n").join("<br>")
+
+                    cmtList += `
 <div class="cmt-item">
     <small class="dateAuthor"><span>Por ${cmt.name}&nbsp;</span><span>em ${date}</span></small>
-    <div class="cmtContent">${cmt.content}</div>
+    <div class="cmtContent">${content}</div>
 </div>
                 `
-            })
+                })
 
-        } else {
-            cmtList = `<p class="center">Nenhum comentário.<br>Seja a(o) primeira(o) a comentar!</p>`
-        }
+            } else {
+                cmtList = `<p class="center">Nenhum comentário.<br>Seja a(o) primeira(o) a comentar!</p>`
+            }
 
             $('#commentList').html(cmtList)
             cmtList = ''

@@ -15,11 +15,7 @@ function myHome() {
      **/
     changeTitle()
 
-    /**
-     * Quando clicar em um artigo.
-     **/
-     $(document).on('click', '.art-item', loadArticle)
-
+    // Armazenará a lista de artigos.
     var articleList = '';
 
     /**
@@ -42,7 +38,7 @@ function myHome() {
                             <p>${art.resume}</p>
                         </div>
                     </div>                    
-                `
+                ` 
             })
 
             // Exibe a lista de artigos na 'home'.
@@ -51,9 +47,6 @@ function myHome() {
         .fail((error) => {
             $('#artList').html('Não encontramos nenhum artigo!!!')
         })
+
 }
 
-function loadArticle() {
-    sessionStorage.article = $(this).attr('data-id')
-    loadpage('view')
-}
