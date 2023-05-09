@@ -1,10 +1,16 @@
+// Quando view estiver pronta executa essa função
 $(document).ready(myView)
 
+// Função que faz a view ser apresentada em tela
 function myView() {
 
+    // Contante que guarda o caminho da sessão do navegador que guarda o id do artigo clicado
     const articleId = parseInt(sessionStorage.article)
 
+    // Verifica se o Id armazenado na sessão é um número e caso não seja, a pagina 404 é carregada
     if (isNaN(articleId)) loadpage('e404')
+
+    // Caso o Id seja um número 
 
     $.get(app.apiBaseURL + 'articles', { id: articleId, status: 'on' })
         .done((data) => {
