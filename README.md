@@ -33,3 +33,7 @@ Para rodá-lo, acesse a pasta do nosso aplicativo em um novo "Node.js command pr
 
 ### IMPORTANTE!
 Observe que, à partir de agora, precisamos de 2 "Node.js command prompt" abertos ao mesmo tempo. No primeiro teremos nossa "API Fake" rodando o json-server e na outra, a instância do servidor Web.
+
+### Front-end
+
+Para testar o aplicativo, abra o navegador e acesse o endereço informado pelo http-server quando foi iniciado.: normalmente http://localhost:8080.

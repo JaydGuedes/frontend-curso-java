@@ -1,3 +1,5 @@
-/*
-folhas de estilo
-*/
+/* Folhas de estilo de home. */
+p[class="center"] img {
+    width: auto;
+    max-width: 100%;
+}

@@ -1,6 +1,6 @@
 /**
  * FrontEndeiros 1.0
- * MIT License 2023 By Jaydee Guedes
+ * MIT License 2023 By Luferat
  **/
 
 /**
@@ -25,18 +25,11 @@
  * Algumas configurações do aplicativo.
  * Dica: você pode acrescentar novas configurações aqui se precisar.
  **/
- var apiBaseURL = 'http://localhost:3000/'
-var app = {
+const app = {
     siteName: 'FrontEndeiros',
     siteSlogan: 'Programando para o futuro',
-    apiContactsURL: apiBaseURL + 'contacts',
-    apiArticlesURL: apiBaseURL + 'articles?_sort=date&_order=desc&status=on',
-    apiArticleURL: apiBaseURL + 'articles/',
-    apiUserURL: apiBaseURL + 'users/',
-    apiCommentURL: apiBaseURL + 'comments?_sort=date&_order=desc&status=on',
-    apiCommentPostURL: apiBaseURL + 'comments'
+    apiBaseURL: 'http://localhost:3000/'
 }
-var path
 
 /**
  * jQuery → Quando o documento estiver pronto, executa a função principal,
@@ -63,24 +56,27 @@ $(document).ready(myApp)
  **/
 function myApp() {
 
-  // Monitora status de autenticação do usuário
-  firebase.auth().onAuthStateChanged((user) => {
+    onstorage = popUpOpen
 
-    // Se o usuário está logado...
-    if (user) {
+    // Monitora status de autenticação do usuário
+    firebase.auth().onAuthStateChanged((user) => {
 
-        // Mostra a imagem do usuário e o link de perfil.
-        $('#navUser').html(`<img src="${user.photoURL}" alt="${user.displayName}" referrerpolicy="no-referrer"><span>Perfil</span>`)
-        $('#navUser').attr('href', 'profile')
+        // Se o usuário está logado...
+        if (user) {
 
-        // Se não tem logados...
-    } else {
+            // Mostra a imagem do usuário e o link de perfil.
+            $('#navUser').html(`<img src="${user.photoURL}" alt="${user.displayName}" referrerpolicy="no-referrer"><span>Perfil</span>`)
+            $('#navUser').attr('href', 'profile')
 
-        // Mostra o ícone de usuário e o link de login.
-        $('#navUser').html(`<i class="fa-solid fa-user fa-fw"></i><span>Login</span>`)
-        $('#navUser').attr('href', 'login')
-    }
-});
+            // Se não tem logados...
+        } else {
+
+            // Mostra o ícone de usuário e o link de login.
+            $('#navUser').html(`<i class="fa-solid fa-user fa-fw"></i><span>Login</span>`)
+            $('#navUser').attr('href', 'login')
+        }
+    });
+
     /**
      * IMPORTANTE!
      * Para que o roteamento funcione corretamente no "live server", é 
@@ -104,24 +100,31 @@ function myApp() {
     loadpage(path)
 
     /**
-     * jQuery → Monitora cliques em elementos '<a>' que , se ocorre, chama a função 
+     * jQuery → Monitora cliques em elementos '<a>' que, se ocorre, chama a função 
      * routerLink().
      **/
     $(document).on('click', 'a', routerLink)
+
     /**
      * Quando clicar em um artigo.
      **/
-     $(document).on('click', '.art-item', loadArticle)
+    $(document).on('click', '.art-item', loadArticle)
 
 }
 
 // Faz login do usuário usando o Firebase Authentication
 function fbLogin() {
     firebase.auth().signInWithPopup(provider)
-        .then(() => {
-
-            // Recarrega a página atual após o login.
+        .then((user) => {
+            popUp({ type: 'success', text: `Olá ${user.user.displayName}!` })
             loadpage(location.pathname.split('/')[1])
+        })
+        .catch((error) => {
+            try {
+                popUp({ type: 'error', text: 'Ooops! Popups estão bloqueados!<br>Por favor, libere-os!' })
+            } catch (e) {
+                alert('Ooops! Popups estão bloqueados!\nPor favor, libere-os!')
+            }
         })
 }
 
@@ -166,14 +169,14 @@ function routerLink() {
         // Devolve o controle para o HTML.
         return true
 
-      /**
+    /**
      * Se clicou no link para 'login', executa a função de login.
      */
-      if (href == 'login') {
+    if (href == 'login') {
         fbLogin()
         return false
     }
-    
+
     /**
      * Carrega a rota solicitada.
      **/
@@ -277,7 +280,6 @@ function loadpage(page, updateURL = true) {
             }
 
         })
-        
 
         // Se ocorreu falha em carregar o documento...
         .catch(() => {
@@ -298,8 +300,7 @@ function loadpage(page, updateURL = true) {
      * Referências:
      *  • https://developer.mozilla.org/en-US/docs/Web/API/History/pushState
      **/
-    if(updateURL)
-        window.history.pushState({}, '', page);
+    if (updateURL) window.history.pushState({}, '', page);
 
 }
 
@@ -317,40 +318,23 @@ function loadpage(page, updateURL = true) {
  * 
  **/
 function changeTitle(title = '') {
-
-    /**
-     * Define o título padrão da página.
-     */
     let pageTitle = app.siteName + ' - '
-
-    /**
-     * Se não foi definido um título para a página, 
-     * usa o slogan.
-     **/
     if (title == '') pageTitle += app.siteSlogan
-
-    /**
-     * Se foi definido um título, usa-o.
-     */
     else pageTitle += title
-
-    /**
-     * Escreve o novo título na tag <title></title>.
-     */
     $('title').html(pageTitle)
-
 }
+
 /**
  * Calcula a idade com base na data (system date).
  **/
- function getAge(sysDate) {
+function getAge(sysDate) {
     // Obtendo partes da data atual.
     const today = new Date()
     const tYear = today.getFullYear()
     const tMonth = today.getMonth() + 1
     const tDay = today.getDate()
 
-    // Obtebdo partes da data original.
+    // Obtendo partes da data original.
     const parts = sysDate.split('-')
     const pYear = parts[0]
     const pMonth = parts[1]
@@ -360,8 +344,7 @@ function changeTitle(title = '') {
     var age = tYear - pYear
 
     // Verificar o mês e o dia.
-    if(pMonth > tMonth) age --
-    else if(pMonth == tMonth && pDay > tDay) age --
+    if (pMonth > tMonth || pMonth == tMonth && pDay > tDay) age--
 
     // Retorna a idade.
     return age
@@ -369,24 +352,79 @@ function changeTitle(title = '') {
 
 /**
  * Carrega o artigo completo.
- */
- function loadArticle() {
-
-    // Obtém o id do artigo e armazena na sessão.
+ **/
+function loadArticle() {
     sessionStorage.article = $(this).attr('data-id')
-
-    // Carrega a página que exibe artigos → view.
     loadpage('view')
 }
 
 /**
  * Sanitiza um texto, removendo todas as tags HTML.
- */
- function stripHtml(html) {
-
-    // Armazena o texto no DOM na forma de string.
+ **/
+function stripHtml(html) {
     let doc = new DOMParser().parseFromString(html, 'text/html');
-
-    // Obtém e retorna o conteúdo do DOM como texto puro.
     return doc.body.textContent || "";
+}
+
+function popUp(params) {
+    const x = window.open('', 'popupWindow', 'width=1,height=1,left=10000');
+    x.localStorage.setItem('popUp', JSON.stringify(params));
+    x.close()
+}
+
+function popUpOpen() {
+
+    if (localStorage.popUp) {
+
+        const pData = JSON.parse(localStorage.popUp)
+        var pStyle = ''
+
+        switch (pData.type) {
+            case 'error': pStyle = 'background-color: #f00; color: #fff'; break
+            case 'alert': pStyle = 'background-color: #ff0; color: #000'; break
+            case 'success': pStyle = 'background-color: #0f0; color: #000'; break
+            default: pStyle = 'background-color: #fff; color: #000'
+        }
+
+        $('body').prepend(`
+        <div id="popup">
+            <div class="popup-body" style="${pStyle}">
+                <div class="popup-text">${pData.text}</div>
+                <div class="popup-close"><i class="fa-solid fa-xmark fa-fw"></i></div>
+            </div>
+        </div>
+        `)
+
+        $('.popup-close').click(popUpClose)
+        setTimeout(popUpClose, parseInt(pData.time) || 3000)
+
+    }
+}
+
+function popUpClose() {
+    delete localStorage.popUp
+    $('#popup').remove()
+}
+
+const myDate = {
+
+    sysToBr: (systemDate, time = true) => {
+        var parts = systemDate.split(' ')[0].split('-')
+        var out = `${parts[2]}/${parts[1]}/${parts[0]}`
+        if (time) out += ` às ${systemDate.split(' ')[1]}`
+        return out
+    },
+
+    jsToBr: (jsDate, time = true) => {
+        var theDate = new Date(jsDate)
+        var out = theDate.toLocaleDateString('pt-BR')
+        if (time) out += ` às ${theDate.toLocaleTimeString('pt-BR')}`
+        return out
+    },
+
+    todayToSys: () => {
+        const today = new Date()
+        return today.toISOString().replace('T', ' ').split('.')[0]
+    }
+
 }
