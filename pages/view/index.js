@@ -10,16 +10,31 @@ function myView() {
     // Verifica se o Id armazenado na sessão é um número e caso não seja, a pagina 404 é carregada
     if (isNaN(articleId)) loadpage('e404')
 
-    // Caso o Id seja um número 
+    // Caso o Id seja um número, monta o endereço para buscar o artigo pelo ID
+    // o comando .get é uma promessa podendo resultar em verdadeiro, falso ou sempre nesse caso em questão verdadeiro e falso 
 
     $.get(app.apiBaseURL + 'articles', { id: articleId, status: 'on' })
+
+     // Os dados da pesquisa são guardandos na variaval data
         .done((data) => {
+            // A busca deve resultar em 1 unico artigo, caso apresente mais ou menos  que 1 artigo é apresentado a pagina de erro
             if (data.length != 1) loadpage('e404')
+
+            // Guarda os dados do unico artigo, data [0] em artData
             artData = data[0]
+
+            // Adiciona os dados de título do artigo, que estão armazenados na variavel artData.title no inner html artTitle
             $('#artTitle').html(artData.title)
+
+            // Adiciona os dados de texto do artigo, que estão armazenados na variavel artData.content no inner html artContent
             $('#artContent').html(artData.content)
+
+            // Função que atualiza a página view com os dados do artigo
             updateViews(artData)
+
+            // função que atualiza o titulo da página
             changeTitle(artData.title)
+            
             getAuthorData(artData)
             getAuthorArticles(artData, 5)
             getUserCommentForm(artData)
