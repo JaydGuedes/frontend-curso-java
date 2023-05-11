@@ -15,32 +15,32 @@
     <title>FrontEnd</title>
 </head>
 <body>
-    <!--WRAP-->
+
+    <!-- WRAP -->
     <div id="wrap">
 
-        <a href="top"></a>
+        <!-- Âncora para o topo da página → #top -->
+        <a id="top"></a>
 
-        <!--CABEÇALHO-->
+        <!-- Cabeçalho usando Font Awesome como ícone -->
         <header>
-            <!-- Usando Font Awesome como logotipo. -->
             <a href="home"><i class="fa-solid fa-laptop-code fa-fw"></i></a>
-            <!-- Usando uma imagem como logotipo.
-                <a href="/">
-                <img src="/img/logo.png" alt="Logotipo de FrontEnd.">
-            </a> -->
-            <h1>
-                FrontEndeiros
-                <small>Programando para o futuro</small>
-            </h1>
+            <h1>FrontEndeiros<small>Programando para o futuro</small></h1>
         </header>
-        <!-- FIM CABEÇALHO-->
 
-        <!--MENU-->
+        <!-- Menu -->
         <nav>
+            <!-- Item de menu -->
             <a href="home">
-                <i class="fa-solid fa-house-chimney fa-fw"></i>
+
+                <!-- Ícone do item do menu -->
+                <i class="fa-solid fa-house fa-fw"></i>
+
+                <!-- Label do item do menu -->
                 <span>Início</span>
             </a>
+
+            <!-- Os outros itens seguem o mesmo padrão acima -->
             <a href="contacts">
                 <i class="fa-solid fa-headset fa-fw"></i>
                 <span>Contatos</span>
@@ -49,36 +49,38 @@
                 <i class="fa-solid fa-circle-info fa-fw"></i>
                 <span>Sobre</span>
             </a>
-            <a href="login"id="navUser">
+
+            <a href="login" id="navUser">
                 <i class="fa-solid fa-user fa-fw"></i>
                 <span>Login</span>
             </a>
         </nav>
-        <!--FIM MENU-->
 
-        <!-- CONTEÚDO PRINCIPAL-->
+        <!-- Conteúdo principal -->
         <main></main>
-        <!--FIM CONTEÚDO PRINCIPAL-->
 
-        <!--RODAPÉ-->
+        <!-- Rodapé -->
         <footer>
-            <!--Primeira linha-->
+
+            <!-- Primeira linha do rodapé -->
             <div class="footer-top">
                 <a href="home">
-                <i class="fa-solid fa-house-chimney fa-fw"></i>
+                    <i class="fa-solid fa-house fa-fw"></i>
                 </a>
-                <div>&copy; 2023 Jaydee Guedes</div>
+                <div>&copy; 2023 Joca da Silva</div>
                 <a href="#top">
-                    <i class="fa-solid fa-arrow-up-wide-short fa-fw"></i>
+                    <i class="fa-solid fa-circle-up fa-fw"></i>
                 </a>
             </div>
-            <!-- Segunda linha-->
+
+            <!-- Segunda linha do rodapé -->
             <div class="footer-bottom">
+
                 <div>
                     <h4>Redes Sociais:</h4>
                     <ul>
                         <li>
-                            <a href="https://facebook.com/FrontEnd" target="_blank">
+                            <a href="HTTPS://facebook.com/FrontEnd" target="_blank">
                                 <i class="fa-brands fa-square-facebook fa-fw"></i>
                                 <span>FaceBook</span>
                             </a>
@@ -97,6 +99,7 @@
                         </li>
                     </ul>
                 </div>
+
                 <div>
                     <h4>Links rápidos:</h4>
                     <ul>
@@ -107,7 +110,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="about">
+                            <a href="aboutus">
                                 <i class="fa-solid fa-laptop-code fa-fw"></i>
                                 <span>Quem somos</span>
                             </a>
@@ -123,17 +126,36 @@
 
             </div>
 
-
         </footer>
-        <!--FIM RODAPÉ-->
+
         <hr class="nbsp">
 
     </div>
-    <!--FIM DO WRAP-->
+    <!-- Fim do WRAP -->
+
+    <div id="aboutCookies">
+        <div class="cookie-modal">
+            <div class="cookie-body">
+                <div class="cookie-content">Nosso site usa
+                    <a href="https://pt.wikipedia.org/wiki/Cookie_(inform%C3%A1tica)" target="_blank">
+                        <strong>Cookies</strong>
+                    </a> para melhorar sua experiência de navegação.
+                </div>
+                <form class="cookie-buttons">
+                    <button type="button" id="policies">Políticas de Privacidade</button>
+                    <button type="button" id="accept">Aceito todos os cookies</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carga do JavaScript -->
     <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script defer src="fb.js"></script>
     <script defer src="index.js"></script>
+
 </body>
+
 </html>
