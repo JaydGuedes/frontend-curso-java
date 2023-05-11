@@ -25,6 +25,13 @@
     margin: 0;
     padding: 1rem;
 }
+.maisV {
+    color: rgb(48, 58, 58);
+}
+.cmtTexts {
+    display: flex;
+    align-items: center;
+}
 
 @media screen and (min-width: 575px) {
 

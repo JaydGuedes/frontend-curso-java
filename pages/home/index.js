@@ -46,72 +46,43 @@ function myHome() {
         //<h3>Comentários</h3>
         //<div id="ultimosComents"></div>
         
-        var articleListMaisVistos = '';
-
-    $.get(app.apiBaseURL + 'articles', {
-        _sort: 'date',
-        _order: 'desc',
-        status: 'on'
-    })
-        .done((data) => {
-            data.forEach((art) => {
-                articleListMaisVistos += `
-                    <div class="aa" data-id="${art.id}">
-                        <div>
-                            <h3>${art.title}</h3>
-                        </div>
-                    </div>                    
-                `
-            })
-            $('#artMaisVis').html(articleListMaisVistos)
-        })
-        .fail((error) => {
-            $('#artList').html('<p class="center">Oooops! Não encontramos nenhum artigo...</p>')
-        })
+        getArticlesMView(5);
+        getCommentsN(5);
 
 }
+/**
+ * Exercício Incremente o aplicativo de forma que, uma vez na página inicial (rota "home"),
+ * na barra lateral, apareçam os 5 (cinco) artigos mais visualizados do site em uma lista chamada "+ Vistos".
+ * Ainda nessa página, implemente também, na barra lateral, uma lista "Comentários", listando os 5 (cinco)
+ * comentários mais recentes, independente de artigo.
+ */
 
+function getArticlesMView(limit) {
 
-// testando
-
-function getAuthorArticles(artData, limit) {
-
-    /**
-     * Montando o endereço para buscar os artigos do autor
-     * app.apiBaseURL é o endreço do sistema que está guardado no objeto app localizada na index.js principal no atributo apiBaseURL
-     * articles é o nome da coleção de usuarios no banco de dados
-     * artData.author é a id do author para localizar os artigos, esta sendo colocada na propriedade author
-     * on é a status que os artigos precisam estar, esta sendo colocada na propriedade status.
-     * artData.id é a id artigo que esta sendo aberto para que seja feita a busca com excessão do mesmo, esta sendo colocada na propriedade id_ne.
-     * limit é a quantidade de artigos que serão carregados, nesse caso é 5, esta sendo colocada na propriedade _limit.
-     **/ 
+    var saida = ''
     $.get(app.apiBaseURL + 'articles', {
         status: 'on',
-        id_ne: artData.id,
+        _sort: 'views',
+        _order: 'desc',
         _limit: limit
     })
 
         // Havendo resultado , os dados da pesquisa são guardandos na variaval artsData
-        .done((artsData) => {
+        .done((Data) => {
 
             // Se a quantidade de artigos cadastrados do autor for maior que zero
-            if (artsData.length > 0) {
+            if (Data.length > 0) {
 
-                // Variavel de string que será utilizada como inner html
-                var output = '<h3><i class="fa-solid fa-plus fa-fw"></i> Artigos</h3><ul>'
-                /**
-                 * Variavel que armazena osartigos do altor de forma aleatória para que não apareçam sempre da mesma maneira
-                 * A função Math.random() pega os resultados e embaralha ele
-                 */
-                var rndData = artsData.sort(() => Math.random() - 0.5)
-                rndData.forEach((artItem) => {
+                var saida = '<ul>'
+                
+                Data.forEach((artItem) => {
                     // Adiciona a variavel output a lista  com o id do artigo e o titulo do artigo
-                    output += `<li class="art-item" data-id="${artItem.id}">${artItem.title}</li>`
+                    saida += `<li class="maisV" data-id="${artItem.id}">${artItem.title}</li>`
                 });
                 // Finaliza a variavel 
-                output += '</ul>'
+                saida += '</ul>'
                 // Adiciona na tag de id authorArtcicles os dados da variavel output
-                $('#authorArtcicles').html(output)
+                $('#artMaisVis').html(saida)
             }
         })
         // Não havendo resultado ou excedendo o tempo de espera.
@@ -123,16 +94,50 @@ function getAuthorArticles(artData, limit) {
         })
 
 }
-/**
- * Exercício Incremente o aplicativo de forma que, uma vez na página inicial (rota "home"),
- * na barra lateral, apareçam os 5 (cinco) artigos mais visualizados do site em uma lista chamada "+ Vistos".
- * Ainda nessa página, implemente também, na barra lateral, uma lista "Comentários", listando os 5 (cinco)
- * comentários mais recentes, independente de artigo.
- */
 
-// + Vistos 5
-// Comentários 5
+function getCommentsN(limit) {
 
+    // Variavel que recebe uma string que será utilizado em um inner html
+    var ultimosComents = ''
+
+    $.get(app.apiBaseURL + 'comments', {
+        status: 'on',
+        _sort: 'date',
+        _order: 'desc',
+        _limit: limit
+    })
+        // Havendo resultado , os dados da pesquisa são guardandos na variaval cmtData
+        .done((cmtData) => {
+            // se o numero de comentários for maior que 0 
+            if (cmtData.length > 0) {
+                // A função forEach percorre o objeto cmtData e adiciona no objeto cmt
+                cmtData.forEach((cmt) => {
+                    // variavel que guarda cada comentário incluindo as quebras de linha que foram efetuadas pelo usuário que comentou
+                    var content = cmt.content.split("\n").join("<br>")   
+                    ultimosComents += `
+                                <div class="cmtTexts">
+                                    <span>Por ${cmt.name}</span><span>em ${myDate.sysToBr(cmt.date)}.</span>
+                                </div>
+                            <div class="cmtContent">${content}</div>
+                    `
+                })
+                // Se o número de comentários for zero é adicionado na variavel commentList o texto Nenhum comentário!<br>Seja o primeiro a comentar...
+            } else {
+                ultimosComents = '<p class="center">Nenhum comentário!</p>'
+            }
+            // Adiciona o conteudo de commentList no inner html da tag de id commentList
+            $('#ultimosComents').html(ultimosComents)
+        })
+
+        // Não havendo resultado ou excedendo o tempo de espera.
+        .fail((error) => {
+            // apresenta um erro no console
+            console.error(error)
+            // apresenta a página 404 
+            loadpage('e404')
+        })
+
+}
 
 
 
