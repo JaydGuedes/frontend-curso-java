@@ -132,22 +132,42 @@ function getAuthorData(artData) {
 // função que busca os artigos do autor do artigo selecionado acima - paremetro entre parenteses é o objeto artData + a quantidade máxima de artigos a buscar, aqui é o máximo de 5 -
 function getAuthorArticles(artData, limit) {
 
-    
-
+    /**
+     * Montando o endereço para buscar os artigos do autor
+     * app.apiBaseURL é o endreço do sistema que está guardado no objeto app localizada na index.js principal no atributo apiBaseURL
+     * articles é o nome da coleção de usuarios no banco de dados
+     * artData.author é a id do author para localizar os artigos, esta sendo colocada na propriedade author
+     * on é a status que os artigos precisam estar, esta sendo colocada na propriedade status.
+     * artData.id é a id artigo que esta sendo aberto para que seja feita a busca com excessão do mesmo, esta sendo colocada na propriedade id_ne.
+     * limit é a quantidade de artigos que serão carregados, nesse caso é 5, esta sendo colocada na propriedade _limit.
+     **/ 
     $.get(app.apiBaseURL + 'articles', {
         author: artData.author,
         status: 'on',
         id_ne: artData.id,
         _limit: limit
     })
+
+        // Havendo resultado , os dados da pesquisa são guardandos na variaval artsData
         .done((artsData) => {
+
+            // Se a quantidade de artigos cadastrados do autor for maior que zero
             if (artsData.length > 0) {
+
+                // Variavel de string que será utilizada como inner html
                 var output = '<h3><i class="fa-solid fa-plus fa-fw"></i> Artigos</h3><ul>'
+                /**
+                 * Variavel que armazena osartigos do altor de forma aleatória para que não apareçam sempre da mesma maneira
+                 * A função Math.random() pega os resultados e embaralha ele
+                 */
                 var rndData = artsData.sort(() => Math.random() - 0.5)
                 rndData.forEach((artItem) => {
+                    // Adiciona a variavel output a lista  com o id do artigo e o titulo do artigo
                     output += `<li class="art-item" data-id="${artItem.id}">${artItem.title}</li>`
                 });
+                // Finaliza a variavel 
                 output += '</ul>'
+                // Adiciona na tag de id authorArtcicles os dados da variavel output
                 $('#authorArtcicles').html(output)
             }
         })
@@ -163,7 +183,18 @@ function getAuthorArticles(artData, limit) {
  // função que busca os comentários do artigo - paremetro entre parenteses é o objeto artData + a quantidade máxima de comentários a buscar - aqui é o máximo 999
 function getArticleComments(artData, limit) {
 
+    // Variavel que recebe uma string que será utilizado em um inner html
     var commentList = ''
+    /**
+     * Montando o endereço para buscar os comentários do artigo
+     * app.apiBaseURL é o endreço do sistema que está guardado no objeto app localizada na index.js principal no atributo apiBaseURL
+     * comments é o nome da coleção de comentários no banco de dados
+     * artData.id é o id do artigo que esta sendo aberto e está sendo adicionado na propriedade article
+     * on é a status que os artigos precisam estar, esta sendo colocada na propriedade status.
+     * date é a data do comentário e é adicionado ao parametro _sort
+     * desc é a ordem que deve ser apresentada. do mais novo para o mais antigo adicionando a propriedade _order      
+     * limit é a quantidade de comentários que serão carregados, nesse caso é 999, esta sendo colocada na propriedade _limit.
+     **/ 
 
     $.get(app.apiBaseURL + 'comments', {
         article: artData.id,
@@ -172,10 +203,21 @@ function getArticleComments(artData, limit) {
         _order: 'desc',
         _limit: limit
     })
+        // Havendo resultado , os dados da pesquisa são guardandos na variaval cmtData
         .done((cmtData) => {
+            // se o numero de comentários for maior que 0 
             if (cmtData.length > 0) {
+                // A função forEach percorre o objeto cmtData e adiciona no objeto cmt
                 cmtData.forEach((cmt) => {
-                    var content = cmt.content.split("\n").join("<br>")
+                    // variavel que guarda cada comentário incluindo as quebras de linha que foram efetuadas pelo usuário que comentou
+                    var content = cmt.content.split("\n").join("<br>")                     
+                    /**
+                     * Adicionando o texto que irá para o inner html
+                     * cmt.photo é a foto do usuário que efetuou o comentário
+                     * cmt.name é o nome do usuario que efetuou o comentário
+                     * myDate.sysToBr(cmt.date) converte a data (cmt.date) que é a data do comentário na data no modelo do brasil
+                     * content é o comentário
+                     */
                     commentList += `
                         <div class="cmtBox">
                             <div class="cmtMetadata">
@@ -188,9 +230,11 @@ function getArticleComments(artData, limit) {
                         </div>
                     `
                 })
+                // Se o número de comentários for zero é adicionado na variavel commentList o texto Nenhum comentário!<br>Seja o primeiro a comentar...
             } else {
                 commentList = '<p class="center">Nenhum comentário!<br>Seja o primeiro a comentar...</p>'
             }
+            // Adiciona o conteudo de commentList no inner html da tag de id commentList
             $('#commentList').html(commentList)
         })
 
@@ -206,10 +250,16 @@ function getArticleComments(artData, limit) {
  // função que buscar os autodos dos comentários do artigo - paremetro entre parenteses é o objeto artData
 function getUserCommentForm(artData) {
 
+    // Variavel que recebe uma string que será utilizado em um inner html
     var cmtForm = ''
 
+    //observador que informa ao firebase alterações de login e logout
     firebase.auth().onAuthStateChanged((user) => {
+
+        // Se usuário existir logado
         if (user) {
+            // Adiciona na variavel cmtForm
+            //user.displayName é o nome do usuário que está fazendo o comentário
             cmtForm = `
                 <div class="cmtUser">Comentando como <em>${user.displayName}</em>:</div>
                 <form method="post" id="formComment" name="formComment">
@@ -217,39 +267,82 @@ function getUserCommentForm(artData) {
                     <button type="submit">Enviar</button>
                 </form>
             `
+            // Adiciona os dados de cmtForm na inner html da tag de id commentForm da index.html da pasta view
             $('#commentForm').html(cmtForm)
+
+            // Botão que submete o formulario para o banco de dados
             $('#formComment').submit((event) => {
+                //função que guarda o comentário no banco
+                // event, artData, user são os dados que serão enviados ao banco de dados 
                 sendComment(event, artData, user)
             })
+            // Se não existir usuário logado
         } else {
+            // Substitue os dados da variavel cmtForm pela informação abaixo
             cmtForm = `<p class="center"><a href="login">Logue-se</a> para comentar.</p>`
+
+            //adiciona os dados de cmtForm na inner html da tag de id commentForm da index.html da pasta view
             $('#commentForm').html(cmtForm)
         }
     })
 
 }
 
+//função que guarda o comentário no banco
+// event, artData, user são os dados que serão enviados ao banco de dados 
 function sendComment(event, artData, userData) {
 
+    // Método do objeto event que previne o envio de comentários vazinos 
     event.preventDefault()
+    // Variavel que recebe o texto do comentário sem espaços no inicio e no fim
     var content = stripHtml($('#txtContent').val().trim())
+    // Adiciona o valor do comentario na no inner html de id txtContent
     $('#txtContent').val(content)
+    // Caso o comentário esteja vazio não envia nada ao banco de dados 
     if (content == '') return false
 
+    // Constante que guarda uma data
     const today = new Date()
+    // guarda a data do sistema retirando o horário  
     sysdate = today.toISOString().replace('T', ' ').split('.')[0]
 
+    /**
+     * Montando o endereço para buscar os comentários do artigo
+     * app.apiBaseURL é o endreço do sistema que está guardado no objeto app localizada na index.js principal no atributo apiBaseURL
+     * comments é o nome da coleção de comentários no banco de dados
+     * userData.uid é o id do usuário que esta comentando, esta sendo colocada na propriedade uid
+     * content é o comentário, esta sendo colocado na propriedade content
+     * artData.id é o id do artigo que esta sendo aberto e está sendo adicionado na propriedade article
+     **/ 
     $.get(app.apiBaseURL + 'comments', {
         uid: userData.uid,
         content: content,
         article: artData.id
     })
+        // Havendo resultado , os dados da pesquisa são guardandos na variaval data
         .done((data) => {
+            // se o numero de dados for maior que 0 
             if (data.length > 0) {
+                // popup  de erro 
                 popUp({ type: 'error', text: 'Ooops! Este comentário já foi enviado antes...' })
+                // retorna false
                 return false
-            } else {
+            } 
+            
+            // se o numero de dados for 0
+            else {
 
+                //constante que guarda todos os dados do comentario
+                /**
+                 * name: userData.displayName - nome do usuario que comentou
+                    photo: userData.photoURL - foto de quem comentou
+                    email: userData.email - email do usuario que comentou
+                    uid: userData.uid - id do usuario que comentou
+                    article: artData.id - id do artigo que recebeu o comentário
+                    content: content - comentário do usuario
+                    date: sysdate - data do sistema no momento do comentário
+                    status: 'on' - status deve ser on
+                 */
                 const formData = {
                     name: userData.displayName,
                     photo: userData.photoURL,
@@ -260,11 +353,17 @@ function sendComment(event, artData, userData) {
                     date: sysdate,
                     status: 'on'
                 }
-
+                // Guarda o comentário no banco de dados 
                 $.post(app.apiBaseURL + 'comments', formData)
+
+                    // Havendo resultado , os dados da pesquisa são guardandos na variaval data 
                     .done((data) => {
+                        // Se o atributo id do objeto data for diferente de zero, executa if
                         if (data.id > 0) {
+                            // Popup que informa que "Seu comentário foi enviado com sucesso!"
                             popUp({ type: 'success', text: 'Seu comentário foi enviado com sucesso!' })
+
+                            // Carrega a página com os arquivos da pasta view 
                             loadpage('view')
                         }
                     })
