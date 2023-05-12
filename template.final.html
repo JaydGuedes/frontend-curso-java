@@ -7,10 +7,6 @@
     <meta name="author" descrition="Jaydee Guedes &lt;jayd.paiva@gmail.com&gt;">
     <meta name="keywords" description="JavaScript, HTML5, CSS3, semântica, mobile-first, responsividade, api, rest">
     <link rel="stylesheet" href="/index.css">
-    
-    <!-- Carrega o CSS específico de cada página -->
-    <link rel="stylesheet" href="" id="pageCSS">
-    
     <link rel="shortcut icon" href="/img/logo.png">
     <title>FrontEnd</title>
 </head>
@@ -22,16 +18,16 @@
         <!-- Âncora para o topo da página → #top -->
         <a id="top"></a>
 
-        <!-- Cabeçalho usando Font Awesome como ícone -->
+        <!-- Cabeçalho -->
         <header>
-            <a href="home"><i class="fa-solid fa-laptop-code fa-fw"></i></a>
+            <a href="/"><i class="fa-solid fa-laptop-code fa-fw"></i></a>
             <h1>FrontEndeiros<small>Programando para o futuro</small></h1>
         </header>
 
         <!-- Menu -->
         <nav>
             <!-- Item de menu -->
-            <a href="home">
+            <a href="/">
 
                 <!-- Ícone do item do menu -->
                 <i class="fa-solid fa-house fa-fw"></i>
@@ -41,30 +37,46 @@
             </a>
 
             <!-- Os outros itens seguem o mesmo padrão acima -->
-            <a href="contacts">
+            <a href="/contacts">
                 <i class="fa-solid fa-headset fa-fw"></i>
                 <span>Contatos</span>
             </a>
-            <a href="about">
+            <a href="/about">
                 <i class="fa-solid fa-circle-info fa-fw"></i>
                 <span>Sobre</span>
             </a>
 
-            <a href="login" id="navUser">
+            <a href="/profile">
                 <i class="fa-solid fa-user fa-fw"></i>
                 <span>Login</span>
             </a>
         </nav>
 
         <!-- Conteúdo principal -->
-        <main></main>
+        <main>
+
+            <!-- Coteúdo da página -->
+            <article>
+
+
+
+            </article>
+
+            <!-- Conteúdo adicional / Barra lateral -->
+            <aside>
+                <h3>Lateral</h3>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum, saepe. Lorem ipsum, dolor sit amet
+                    consectetur adipisicing elit. Dolorum, saepe.</p>
+            </aside>
+
+        </main>
 
         <!-- Rodapé -->
         <footer>
 
             <!-- Primeira linha do rodapé -->
             <div class="footer-top">
-                <a href="home">
+                <a href="/">
                     <i class="fa-solid fa-house fa-fw"></i>
                 </a>
                 <div>&copy; 2023 Joca da Silva</div>
@@ -80,7 +92,7 @@
                     <h4>Redes Sociais:</h4>
                     <ul>
                         <li>
-                            <a href="HTTPS://facebook.com/FrontEnd" target="_blank">
+                            <a href="https://facebook.com/FrontEnd" target="_blank">
                                 <i class="fa-brands fa-square-facebook fa-fw"></i>
                                 <span>FaceBook</span>
                             </a>
@@ -104,19 +116,19 @@
                     <h4>Links rápidos:</h4>
                     <ul>
                         <li>
-                            <a href="about">
+                            <a href="/about">
                                 <i class="fa-solid fa-file-code fa-fw"></i>
                                 <span>Sobre o site</span>
                             </a>
                         </li>
                         <li>
-                            <a href="aboutus">
+                            <a href="/about">
                                 <i class="fa-solid fa-laptop-code fa-fw"></i>
                                 <span>Quem somos</span>
                             </a>
                         </li>
                         <li>
-                            <a href="policies">
+                            <a href="/about">
                                 <i class="fa-solid fa-user-lock fa-fw"></i>
                                 <span>Privacidade</span>
                             </a>
@@ -133,28 +145,9 @@
     </div>
     <!-- Fim do WRAP -->
 
-    <div id="aboutCookies">
-        <div class="cookie-modal">
-            <div class="cookie-body">
-                <div class="cookie-content">Nosso site usa
-                    <a href="https://pt.wikipedia.org/wiki/Cookie_(inform%C3%A1tica)" target="_blank">
-                        <strong>Cookies</strong>
-                    </a> para melhorar sua experiência de navegação.
-                </div>
-                <form class="cookie-buttons">
-                    <button type="button" id="policies">Políticas de Privacidade</button>
-                    <button type="button" id="accept">Aceito todos os cookies</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Carga do JavaScript -->
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script defer src="fb.js"></script>
-    <script defer src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="/index.js"></script>
 
 </body>
 
