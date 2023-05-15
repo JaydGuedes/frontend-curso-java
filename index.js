@@ -99,7 +99,7 @@ function myApp() {
     path = sessionStorage.path
 
     // Apaga o 'localStorage', liberando o recurso.
-    delete sessionStorage.path
+    //delete sessionStorage.path
 
     // Carrega a página solicitada pela rota.
     loadpage(path)
