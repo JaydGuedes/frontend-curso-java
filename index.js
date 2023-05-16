@@ -1,6 +1,6 @@
 /**
  * FrontEndeiros 1.0
- * MIT License 2023 By Luferat
+ * MIT License 2023 By Jaydee Guedes
  **/
 
 /**
