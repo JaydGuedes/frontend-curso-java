@@ -183,7 +183,8 @@ function routerLink() {
         href.substring(0, 7) == 'http://' ||
         href.substring(0, 8) == 'https://' ||
         href.substring(0, 4) == 'tel:' ||
-        href.substring(0, 7) == 'mailto:'
+        href.substring(0, 7) == 'mailto:'||
+        href.substring(0, 1) == '#'
     )
         // Devolve o controle para o HTML.
         return true
