@@ -188,7 +188,9 @@ function routerLink() {
         // Devolve o controle para o HTML.
         return true
     if(href.substring(0, 1) == '#'){
-        window.scrollTo(0, 0);}
+        window.scrollTo(0, 0);
+    return true
+    }
 
     /**
      * Se clicou no link para 'login', executa a função de login.
