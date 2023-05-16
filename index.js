@@ -183,11 +183,12 @@ function routerLink() {
         href.substring(0, 7) == 'http://' ||
         href.substring(0, 8) == 'https://' ||
         href.substring(0, 4) == 'tel:' ||
-        href.substring(0, 7) == 'mailto:' ||
-        href.substring(0, 1) == '#'
+        href.substring(0, 7) == 'mailto:'
     )
         // Devolve o controle para o HTML.
         return true
+    if(href.substring(0, 1) == '#'){
+        window.scrollTo(0, 0);}
 
     /**
      * Se clicou no link para 'login', executa a função de login.
