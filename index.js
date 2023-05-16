@@ -189,7 +189,7 @@ function routerLink() {
         return true
     if(href.substring(0, 1) == '#'){
         window.scrollTo(0, 0);
-        return false
+        return true
     }
 
     /**
